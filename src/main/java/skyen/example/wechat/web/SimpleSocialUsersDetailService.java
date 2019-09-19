@@ -1,4 +1,4 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

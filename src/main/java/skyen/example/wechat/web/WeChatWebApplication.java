@@ -1,12 +1,10 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,17 +14,15 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.social.security.SpringSocialConfigurer;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.WebApplicationContext;
 
 @RestController
 @SpringBootApplication
-public class WechatOfficalAccountsPlatformApplication {
+public class WeChatWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WechatOfficalAccountsPlatformApplication.class, args);
+        SpringApplication.run(WeChatWebApplication.class, args);
     }
 
     @RequestMapping("/")

@@ -1,4 +1,4 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web.api;
 
 import java.io.Serializable;
 

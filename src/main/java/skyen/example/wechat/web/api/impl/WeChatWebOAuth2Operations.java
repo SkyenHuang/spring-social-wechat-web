@@ -1,8 +1,6 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web.api.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
@@ -15,34 +13,52 @@ import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.social.support.FormMapHttpMessageConverter;
 import org.springframework.social.support.LoggingErrorHandler;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import skyen.example.wechat.web.connect.WeChatWebAccessGrant;
+import skyen.example.wechat.web.connect.WeChatWebUserContext;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Component
-public class WechatOapOAuth2Template implements OAuth2Operations {
 
-    private final String appId = "wxa2ce967e92d4147c";
+public class WeChatWebOAuth2Operations implements OAuth2Operations {
 
-    private final String secret = "20d1590a5d65f70c62766eabbdd0ccac";
+    private final String appId;
 
-    private final String authorizeUrl = "https://open.weixin.qq.com/connect/oauth2/authorize"; //"?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+    private final String secret;
 
-    private final String accessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token";//"?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+    private final String authorizeUrl;// = "https://open.weixin.qq.com/connect/oauth2/authorize"; //"?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
-    private final String refreshTokenUrl = "https://api.weixin.qq.com/sns/oauth2/refresh_token";//"?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN"
+    private final String accessTokenUrl;// = "https://api.weixin.qq.com/sns/oauth2/access_token";//"?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+
+    private final String refreshTokenUrl;// = "https://api.weixin.qq.com/sns/oauth2/refresh_token";//"?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN"
 
     private RestTemplate restTemplate;
 
+
+    public WeChatWebOAuth2Operations(String appId, String secret) {
+        this(appId, secret,
+                "https://open.weixin.qq.com/connect/oauth2/authorize",
+                "https://api.weixin.qq.com/sns/oauth2/access_token",
+                "https://api.weixin.qq.com/sns/oauth2/refresh_token");
+    }
+
+    public WeChatWebOAuth2Operations(String appId, String secret, String authorizeUrl, String accessTokenUrl, String refreshTokenUrl) {
+        this.appId = appId;
+        this.secret = secret;
+        this.authorizeUrl = authorizeUrl;
+        this.accessTokenUrl = accessTokenUrl;
+        this.refreshTokenUrl = refreshTokenUrl;
+    }
+
     @Autowired(required = false)
-    private WechatOapUserContext wechatOapUserContext;
+    private WeChatWebUserContext wechatWebUserContext;
+
 
     @Override
     public String buildAuthorizeUrl(OAuth2Parameters parameters) {
@@ -108,7 +124,7 @@ public class WechatOapOAuth2Template implements OAuth2Operations {
         parameters.add("refresh_token", refreshToken);
         parameters.add("grant_type", "refresh_token");
         parameters.addAll(additionalParameters);
-        Map map = (Map) getRestTemplate().getForEntity(accessTokenUrl, Map.class, parameters).getBody();
+        Map map = (Map) getRestTemplate().getForEntity(refreshTokenUrl, Map.class, parameters).getBody();
         return createAccessGrant(map);
     }
 
@@ -156,8 +172,10 @@ public class WechatOapOAuth2Template implements OAuth2Operations {
 
 
     protected AccessGrant createAccessGrant(Map map) {
-        wechatOapUserContext.getOpenId().setValue((String) map.get("openid"));
-        AccessGrant accessGrant = new AccessGrant((String) map.get("access_token"), (String) map.get("scope"), (String) map.get("refresh_token"), Long.valueOf(String.valueOf(map.get("expires_in"))));
+        WeChatWebAccessGrant accessGrant = new WeChatWebAccessGrant((String) map.get("access_token"),
+                (String) map.get("scope"), (String) map.get("refresh_token"),
+                Long.valueOf(String.valueOf(map.get("expires_in"))),
+                String.valueOf(map.get("openid")));
         return accessGrant;
     }
 }

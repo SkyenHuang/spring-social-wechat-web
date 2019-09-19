@@ -1,4 +1,4 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class WechatOfficalAccountsPlatformApplicationTests {
+public class WeChatWebApplicationTests {
 
     @Test
     public void contextLoads() {

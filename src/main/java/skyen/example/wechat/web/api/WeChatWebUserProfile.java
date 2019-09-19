@@ -1,10 +1,10 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web.api;
 
 import org.springframework.social.connect.UserProfile;
 
 import java.util.List;
 
-public class WechatOapUserProfile extends UserProfile {
+public class WeChatWebUserProfile extends UserProfile {
 
 //    {
 //        "openid":" OPENID",
@@ -27,7 +27,7 @@ public class WechatOapUserProfile extends UserProfile {
     private List<String> privilege;
     private String unionId;
 
-    public WechatOapUserProfile(String id, String name, String firstName, String lastName, String email, String username) {
+    public WeChatWebUserProfile(String id, String name, String firstName, String lastName, String email, String username) {
         super(id, name, firstName, lastName, email, username);
     }
 }

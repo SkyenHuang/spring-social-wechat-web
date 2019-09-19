@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package skyen.example.wechatofficialaccountsplatform;
-
-import javax.inject.Inject;
-import javax.sql.DataSource;
+package skyen.example.wechat.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,26 +21,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
-import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.connect.web.ReconnectFilter;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Map;
+import skyen.example.wechat.web.api.OpenId;
+import skyen.example.wechat.web.connect.WeChatWebConnectionFactory;
 
 /**
  * Spring Social Configuration.
@@ -56,12 +44,12 @@ import java.util.Map;
 public class SocialConfig extends SocialConfigurerAdapter {
 
     @Autowired
-    WechatOapConnectionFactory wechatOapConnectionFactory;
+    WeChatWebConnectionFactory wechatWebConnectionFactory;
 
 
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-        cfConfig.addConnectionFactory(wechatOapConnectionFactory);
+        cfConfig.addConnectionFactory(wechatWebConnectionFactory);
     }
 
 

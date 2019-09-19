@@ -1,31 +1,40 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web.api.impl;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.oauth2.TokenStrategy;
+import skyen.example.wechat.web.api.OpenId;
+import skyen.example.wechat.web.api.UserInfoOperations;
+import skyen.example.wechat.web.api.WeChatWeb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class WechatOapTemplate extends AbstractOAuth2ApiBinding implements WechatOap {
+public class WeChatWebTemplate extends AbstractOAuth2ApiBinding implements WeChatWeb {
 
-    private final String openId;
+    private final OpenId openId;
 
-    public WechatOapTemplate(String accessToken, String openId) {
-        super(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);
-        this.openId = openId;
+    public OpenId getOpenId() {
+        return openId;
     }
 
-    public Map<String, Object> getUserInfo() {
-        return getRestTemplate().getForEntity("https://api.weixin.qq.com/sns/userinfo?openid={openId}&lang=zh_CN", Map.class,openId).getBody();
+    UserInfoOperations userInfoOperations;
+
+    public WeChatWebTemplate(String accessToken, OpenId openId) {
+        super(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);
+        this.openId = openId;
+        initUserInfoOperations();
+    }
+
+    void initUserInfoOperations() {
+        userInfoOperations = new UserInfoTemplate(getRestTemplate(), getOpenId());
     }
 
 
     @Override
     protected MappingJackson2HttpMessageConverter getJsonMessageConverter() {
-        return new MappingJackson2HttpMessageConverter(){
+        return new MappingJackson2HttpMessageConverter() {
 
             @Override
             public List<MediaType> getSupportedMediaTypes() {
@@ -35,5 +44,10 @@ public class WechatOapTemplate extends AbstractOAuth2ApiBinding implements Wecha
                 return supportedMediaTypes;
             }
         };
+    }
+
+    @Override
+    public UserInfoOperations userInfoOperations() {
+        return userInfoOperations;
     }
 }

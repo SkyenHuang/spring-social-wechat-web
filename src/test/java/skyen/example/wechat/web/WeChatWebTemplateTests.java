@@ -1,10 +1,11 @@
-package skyen.example.wechatofficialaccountsplatform;
+package skyen.example.wechat.web;
 
 
 import org.junit.Test;
 import org.springframework.social.oauth2.OAuth2Parameters;
+import skyen.example.wechat.web.api.impl.WeChatWebOAuth2Operations;
 
-public class WechatOapTemplateTests {
+public class WeChatWebTemplateTests {
 
 
     @Test
@@ -14,7 +15,7 @@ public class WechatOapTemplateTests {
         parameters.setScope("snsapi_userinfo");
         parameters.setRedirectUri("http://somewhere");
         parameters.setState("你好");
-        String authorizeUrl = new WechatOapOAuth2Template().buildAuthorizeUrl(parameters);
+        String authorizeUrl = new WeChatWebOAuth2Operations(appId, secret, authorizeUrl, accessTokenUrl, refreshTokenUrl).buildAuthorizeUrl(parameters);
         System.out.println(authorizeUrl);
     }
 
