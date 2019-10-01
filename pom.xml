@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>skyen.example</groupId>
-    <artifactId>wechat-offical-accounts-platform</artifactId>
+    <artifactId>spring-soical-wechat-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>wechat-official-accounts-platform</name>
+    <name>spring-social-wechat-web</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
